@@ -1,0 +1,1 @@
+A:\Projekan\Belajar\TestPersuahaan\TestAndroid-Gibox\TestAndroid-Gibox\buildSrc\build\classes\kotlin\main\Libs.class;A:\Projekan\Belajar\TestPersuahaan\TestAndroid-Gibox\TestAndroid-Gibox\buildSrc\build\classes\kotlin\main\Versions.class
