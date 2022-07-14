@@ -8,6 +8,7 @@
 package com.gibox.testandroid.view.ui.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,18 +35,25 @@ class MainViewModel(private val authUseCase:AuthUseCase):ViewModel()  {
     private val _dataRequestLogin = MutableLiveData<LoginEntityDomain>()
     private val _isLoadingRequestLogin = MutableLiveData<Boolean>()
 
-    val isErrorRequestLogin = _isErrorRequestLogin
-    val dataRequestLogin = _dataRequestLogin
-    val isLoadingRequestLogin = _isLoadingRequestLogin
+    var isErrorRequestLogin = _isErrorRequestLogin
+    var dataRequestLogin = _dataRequestLogin
+    var isLoadingRequestLogin = _isLoadingRequestLogin
 
     fun requestLogin(loginRequest:LoginRequest){
 
         viewModelScope.launch {
+            isLoadingRequestLogin.value = true
             withContext(Dispatchers.IO) {
                 authUseCase.doLogin(loginRequest).collect {
                     when(it) {
                         is Resource.Success -> {
-                            dataRequestLogin.value = it.data
+                            dataRequestLogin.postValue(it.data)
+                        }
+                        is Resource.Loading -> {
+                            isLoadingRequestLogin.postValue(true)
+                        }
+                        is Resource.Error -> {
+                            isErrorRequestLogin.postValue(it.message)
                         }
                     }
                 }

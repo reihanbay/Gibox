@@ -7,7 +7,6 @@
 
 package com.gibox.testandroid.core.data.auth.source
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import com.gibox.testandroid.core.ApiResponse
@@ -26,8 +25,7 @@ import kotlinx.coroutines.flow.flow
 class AuthRepository(private val authRemoteDataSource: AuthRemoteDataSource): IAuthRepository {
 
     override fun doLogin(dataLogin: LoginRequest): Flow<Resource<LoginEntityDomain>> = flow {
-        Log.d("TAG", "doLogin: repo")
-
+        emit(Resource.Loading())
         when(val apiResponse = authRemoteDataSource.doLogin(dataLogin).first()){
             is ApiResponse.Success->{
                 val response= AuthDataMapper.mapResponseToDomain(apiResponse.data)

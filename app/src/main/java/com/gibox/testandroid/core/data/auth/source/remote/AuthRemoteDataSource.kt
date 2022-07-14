@@ -6,7 +6,6 @@
  */
 package com.gibox.testandroid.core.data.auth.source.remote
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -18,6 +17,7 @@ import com.gibox.testandroid.core.data.auth.source.remote.response.DataItem
 import com.gibox.testandroid.core.data.auth.source.remote.response.LoginResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
@@ -30,25 +30,24 @@ class AuthRemoteDataSource(private val authService: AuthService) {
     }
 
     suspend fun doLogin(dataLogin: LoginRequest): Flow<ApiResponse<LoginResponse>> {
-        Log.d("TAG", "doLogin: datas")
-        return flow {
+        return channelFlow {
             try {
                 val response = authService.authenticate(dataLogin)
                 if (response.token!=null){
-                    emit(ApiResponse.Success(response))
+                    send(ApiResponse.Success(response))
                 }else{
-                    emit(ApiResponse.Empty)
+                    send(ApiResponse.Empty)
                 }
             }catch (e: HttpException){
                 if (e.code() in 400..499){
-                    emit(ApiResponse.Error("Email Atau Password Salah"))
+                    send(ApiResponse.Error("Email Atau Password Salah"))
                 }else if (e.code()==500){
-                    emit(ApiResponse.Error("Kesalahan Server, Coba Lagi"))
+                    send(ApiResponse.Error("Kesalahan Server, Coba Lagi"))
                 }else{
-                    emit(ApiResponse.Empty)
+                    send(ApiResponse.Empty)
                 }
             }catch (e:Exception){
-                emit(ApiResponse.Error("Koneksi Bermasalah, Coba Lagi"))
+                send(ApiResponse.Error("Koneksi Bermasalah, Coba Lagi"))
             }
         }.flowOn(Dispatchers.IO)
     }
