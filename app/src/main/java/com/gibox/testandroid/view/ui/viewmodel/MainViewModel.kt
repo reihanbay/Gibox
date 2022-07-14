@@ -26,26 +26,33 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-class MainViewModel(private val authUseCase:AuthUseCase):ViewModel()  {
-
+class MainViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
 
     private val _isErrorRequestLogin = MutableLiveData<String>()
     private val _dataRequestLogin = MutableLiveData<LoginEntityDomain>()
     private val _isLoadingRequestLogin = MutableLiveData<Boolean>()
 
+    private val _isErrorRequestList = MutableLiveData<String>()
+    private val _dataRequestList = MutableLiveData<DataItem>()
+    private val _isLoadingRequestList = MutableLiveData<Boolean>()
+
     var isErrorRequestLogin = _isErrorRequestLogin
     var dataRequestLogin = _dataRequestLogin
     var isLoadingRequestLogin = _isLoadingRequestLogin
 
-    fun requestLogin(loginRequest:LoginRequest){
+    var isErrorRequestList = _isErrorRequestList
+    var dataRequestList = _dataRequestList
+    var isLoadingRequestList = _isLoadingRequestList
 
+    fun requestLogin(loginRequest: LoginRequest) {
         viewModelScope.launch {
             isLoadingRequestLogin.value = true
             withContext(Dispatchers.IO) {
                 authUseCase.doLogin(loginRequest).collect {
-                    when(it) {
+                    when (it) {
                         is Resource.Success -> {
                             dataRequestLogin.postValue(it.data)
                         }
@@ -58,12 +65,19 @@ class MainViewModel(private val authUseCase:AuthUseCase):ViewModel()  {
                     }
                 }
             }
-//            when (res) {
-//                is Resource.Success -> dataRequestLogin.value = res.data
-//            }
         }
+    }
 
-
+    fun requestListUser() {
+        viewModelScope.launch {
+            isLoadingRequestList.value = true
+            withContext(Dispatchers.IO) {
+                authUseCase.getUserList().collect {
+                    it.map {
+                    }
+                }
+            }
+        }
     }
 
 }

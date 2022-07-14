@@ -16,7 +16,7 @@ import com.gibox.testandroid.core.domain.auth.model.LoginEntityDomain
 import com.gibox.testandroid.core.domain.auth.repository.IAuthRepository
 import kotlinx.coroutines.flow.Flow
 
-class AuthInteractor(private val authRepository: IAuthRepository):AuthUseCase {
+class AuthInteractor(private val authRepository: IAuthRepository) : AuthUseCase {
     override fun doLogin(dataLogin: LoginRequest): Flow<Resource<LoginEntityDomain>> {
         Log.d("TAG", "doLogin: adasd")
         return authRepository.doLogin(dataLogin)

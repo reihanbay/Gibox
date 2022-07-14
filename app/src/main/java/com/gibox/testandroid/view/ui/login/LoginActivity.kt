@@ -9,10 +9,8 @@ package com.gibox.testandroid.view.ui.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import androidx.core.widget.ContentLoadingProgressBar
 import com.gibox.testandroid.R
 import com.gibox.testandroid.core.data.auth.source.remote.request.LoginRequest
 import com.gibox.testandroid.core.db.PrefUtils
@@ -20,9 +18,7 @@ import com.gibox.testandroid.databinding.ActivityLoginBinding
 import com.gibox.testandroid.util.constant.ACCESS_TOKEN
 import com.gibox.testandroid.util.constant.FIELD_REQUIRED
 import com.gibox.testandroid.util.constant.KEY_LOGIN
-import com.gibox.testandroid.util.hideKeyboard
 import com.gibox.testandroid.util.openActivity
-import com.gibox.testandroid.util.showToast
 import com.gibox.testandroid.view.ui.viewmodel.MainViewModel
 import com.gibox.testandroid.view.ui.listuser.ListUserActivity
 import org.koin.android.viewmodel.ext.android.viewModel

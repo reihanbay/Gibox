@@ -52,7 +52,7 @@ class AuthRemoteDataSource(private val authService: AuthService) {
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getListUser():Flow<PagingData<DataItem>>{
+    fun getListUser() : Flow<PagingData<DataItem>>{
         return Pager(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE,enablePlaceholders = false),
             pagingSourceFactory = {UserListPagingSource(authService)}
